@@ -1,6 +1,6 @@
 
 // Uncomment to debug using serial monitor at 115200 baud
-#define DEBUG
+//#define DEBUG
 
 // Uncomment the correct target machine to use your C64 keyboard with
 //#define U64
