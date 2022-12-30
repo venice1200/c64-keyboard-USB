@@ -1,6 +1,6 @@
 
 // Uncomment to debug using serial monitor at 115200 baud
-//#define DEBUG
+#define DEBUG
 
 // Uncomment the correct target machine to use your C64 keyboard with
 //#define U64
@@ -196,7 +196,7 @@ keymap[46] = 'o';
 keymap[51] = 'p';
 keymap[56] = '@';
 keymap[61] = '*';
-keymap[71] = UPARROW;   
+keymap[66] = UPARROW;   
 
 // THIRD ROW
 
@@ -276,9 +276,13 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
-          //case 50:
-          //  return true;
-          //  break;
+          case 30:   // New
+            return true;
+            break;
+
+          case 50:
+            return true;
+            break;
             
           case 55:
             return true;
@@ -287,7 +291,7 @@ bool ignoreKey(int keynum) {
           case 56:
             return true;
             break;
-            
+
           case 62:
             return true;
             break;
@@ -354,6 +358,10 @@ bool ignoreKey(int keynum) {
               return true;
               break;
       
+            case 43:
+              return true;
+              break;
+      
             case 54:
               return true;
               break;
@@ -400,21 +408,41 @@ bool specialKeys(int keynum) {
         // Special Keys
           switch (keynum) 
           {
+
+
+          case 30:
+            printchar = '7';  // Number 7 (also ignored, see above!)
+            if ( shifted() ) {
+              printchar = '6';  // MiSTer Fix, Shift-6 is swapped with Shift-7
+              BootKeyboard.press(KEY_LEFT_SHIFT);
+            }
+            if( ckey() ) BootKeyboard.press(CKEY);
+            if (ctrl()) BootKeyboard.press(CTRLKEY);
+            BootKeyboard.press(printchar);  
+            delay(debounceDelay);
+            BootKeyboard.release(printchar);  
+            if (ctrl()) BootKeyboard.release(CTRLKEY);
+            if( ckey() ) BootKeyboard.release(CKEY);
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
+            SerialWrite(printchar);
+            return true;
+            break; 
+
           case 66:
+            if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(UPARROW);
             delay(debounceDelay);
             BootKeyboard.release(UPARROW);
+            if( ckey() ) BootKeyboard.release(CKEY);
             SerialPrintLine("UPARROW");
-            //SerialPrintLine("SPACE");
             return true;
             break;
 
-          case 71:
+          case 71:  // 
             BootKeyboard.press(LEFTARROW);
             delay(debounceDelay);
             BootKeyboard.release(LEFTARROW);
             SerialPrintLine("LEFTARROW");
-            //SerialPrintLine("SPACE");
             return true;
             break;
             
@@ -453,11 +481,14 @@ bool specialKeys(int keynum) {
             #else
               printchar = '+';              
             #endif
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
+            if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(printchar);  
             delay(debounceDelay);
             BootKeyboard.release(printchar);  
+            if( ckey() ) BootKeyboard.release(CKEY);
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialWrite(printchar);
-            //SerialWrite('+');
             return true;
             break; 
 
@@ -467,9 +498,11 @@ bool specialKeys(int keynum) {
             #else
               printchar = ':';              
             #endif
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
             BootKeyboard.press(printchar);  
             delay(debounceDelay);
             BootKeyboard.release(printchar);  
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialWrite(printchar);
             return true;
             break; 
@@ -480,9 +513,13 @@ bool specialKeys(int keynum) {
             #else
               printchar = '@';              
             #endif
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
+            if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(printchar);  
             delay(debounceDelay);
             BootKeyboard.release(printchar);  
+            if( ckey() ) BootKeyboard.release(CKEY);
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialWrite(printchar);
             return true;
             break;
@@ -493,9 +530,11 @@ bool specialKeys(int keynum) {
             #else
               printchar = ';';              
             #endif
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
             BootKeyboard.press(printchar);  
             delay(debounceDelay);
             BootKeyboard.release(printchar);  
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialWrite(printchar);
             return true;
             break; 
@@ -702,59 +741,50 @@ bool specialKeys(int keynum) {
             printchar = NULL;
       
             switch (keynum) {
-              
-
       
             case 10:
               printchar = '#';
               break;
        
-      
             case 13:
               printchar = '$';
               break;
        
-      
             case 20:
               printchar = '%';
               break;
        
-      
             case 23:
               printchar = '&';
               break;
        
-      
-            case 30:
-              printchar = '\'';
-              break;
+            //case 30:
+            //  printchar = '\'';
+            //  break;
        
-      
             case 33:
               printchar = '(';
               break;
        
-      
             case 40:
               printchar = ')';
               break;
-       
-            
+           
             case 54:
               printchar = '>';
               break;
               
-            case 55:
-              printchar = '[';
-              break;
+            //case 55:
+            //  printchar = '[';
+            //  break;
     
             case 57:
               printchar = '<';
               break;
              
-            case 62:
-              printchar = ']';
-              break;
+            //case 62:
+            //  printchar = ']';
+            //  break;
        
             case 67:
               printchar = '?';
@@ -771,7 +801,6 @@ bool specialKeys(int keynum) {
                 printchar = '"';              
               #endif
               break;
-       
        
           }
 
@@ -872,7 +901,7 @@ void loop() {
           SerialPrint("\n\r");
         }
 
-        if(!specialKeys(thisKey)) press(keymap[thisKey]);
+        if(!specialKeys(thisKey) && !ignoreKey(thisKey)) press(keymap[thisKey]);
       }
 
       // The key is NOT down but WAS before
