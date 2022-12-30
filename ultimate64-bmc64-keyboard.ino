@@ -1,11 +1,11 @@
 
 // Uncomment to debug using serial monitor at 115200 baud
-// #define DEBUG
+//#define DEBUG
 
 // Uncomment the correct target machine to use your C64 keyboard with
 //#define U64
-#define VICE
-//#define MISTER
+//#define VICE
+#define MISTER
 //#define BMC64
 
 
@@ -276,9 +276,9 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
-          case 50:
-            return true;
-            break;
+          //case 50:
+          //  return true;
+          //  break;
             
           case 55:
             return true;
@@ -325,7 +325,6 @@ bool ignoreKey(int keynum) {
             printchar = NULL;
       
             switch (keynum) {
-              
            
             case 10:
               return true;
@@ -402,25 +401,24 @@ bool specialKeys(int keynum) {
           switch (keynum) 
           {
           case 66:
-          
             BootKeyboard.press(UPARROW);
             delay(debounceDelay);
             BootKeyboard.release(UPARROW);
-            SerialPrintLine("SPACE");
+            SerialPrintLine("UPARROW");
+            //SerialPrintLine("SPACE");
             return true;
             break;
 
           case 71:
-          
             BootKeyboard.press(LEFTARROW);
             delay(debounceDelay);
             BootKeyboard.release(LEFTARROW);
-            SerialPrintLine("SPACE");
+            SerialPrintLine("LEFTARROW");
+            //SerialPrintLine("SPACE");
             return true;
             break;
             
           case 74:
-          
             BootKeyboard.press(KEY_SPACE);
             delay(debounceDelay);
             BootKeyboard.release(KEY_SPACE);
@@ -428,8 +426,7 @@ bool specialKeys(int keynum) {
             return true;
             break;   
 
-          case 75:
-
+          case 75:              // Commodore Key
             if ( shifted() ) 
             {
               BootKeyboard.press(KEY_LEFT_SHIFT);
@@ -438,12 +435,11 @@ bool specialKeys(int keynum) {
               BootKeyboard.release(CKEY);
               BootKeyboard.release(KEY_LEFT_SHIFT);
               SerialPrintLine("CHANGE CASE"); 
-              return true;
-              break;          
             }
+            return true;
+            break;          
    
           case 77:
-                  
             BootKeyboard.press(KEYSTOP);  
             delay(debounceDelay);
             BootKeyboard.release(KEYSTOP);
@@ -460,64 +456,65 @@ bool specialKeys(int keynum) {
             BootKeyboard.press(printchar);  
             delay(debounceDelay);
             BootKeyboard.release(printchar);  
-            SerialWrite('+');
+            SerialWrite(printchar);
+            //SerialWrite('+');
             return true;
-             break; 
+            break; 
 
          case 55:
-              #if defined(MISTER)           
-                printchar = ';';
-              #else
-                printchar = ':';              
-              #endif
-              BootKeyboard.press(printchar);  
-              delay(debounceDelay);
-              BootKeyboard.release(printchar);  
-              SerialWrite(printchar);
-              return true;
-              break; 
+            #if defined(MISTER)           
+              printchar = ';';
+            #else
+              printchar = ':';              
+            #endif
+            BootKeyboard.press(printchar);  
+            delay(debounceDelay);
+            BootKeyboard.release(printchar);  
+            SerialWrite(printchar);
+            return true;
+            break; 
               
          case 56:
-              #if defined(MISTER)           
-                printchar = '[';
-              #else
-                printchar = '@';              
-              #endif
-              BootKeyboard.press(printchar);  
-              delay(debounceDelay);
-              BootKeyboard.release(printchar);  
-              SerialWrite(printchar);
-              return true;
-              break;
+            #if defined(MISTER)           
+              printchar = '[';
+            #else
+              printchar = '@';              
+            #endif
+            BootKeyboard.press(printchar);  
+            delay(debounceDelay);
+            BootKeyboard.release(printchar);  
+            SerialWrite(printchar);
+            return true;
+            break;
                
           case 62:
-              #if defined(MISTER)           
-                printchar = '\'';
-              #else
-                printchar = ';';              
-              #endif
-              BootKeyboard.press(printchar);  
-              delay(debounceDelay);
-              BootKeyboard.release(printchar);  
-              SerialWrite(printchar);
-              return true;
-              break; 
+            #if defined(MISTER)           
+              printchar = '\'';
+            #else
+              printchar = ';';              
+            #endif
+            BootKeyboard.press(printchar);  
+            delay(debounceDelay);
+            BootKeyboard.release(printchar);  
+            SerialWrite(printchar);
+            return true;
+            break; 
 
           case 65:
-              #if defined(MISTER)           
-                BootKeyboard.press(KEY_F10);  
-                delay(debounceDelay);
-                BootKeyboard.release(KEY_F10);  
-                SerialWrite('=');  
-              #else
-                BootKeyboard.press('=');  
-                delay(debounceDelay);
-                BootKeyboard.release('=');  
-                SerialWrite('=');          
-              #endif
+            #if defined(MISTER)           
+              BootKeyboard.press(KEY_F10);  
+              delay(debounceDelay);
+              BootKeyboard.release(KEY_F10);  
+              SerialWrite('=');  
+            #else
+              BootKeyboard.press('=');  
+              delay(debounceDelay);
+              BootKeyboard.release('=');  
+              SerialWrite('=');          
+            #endif
 
-              return true;
-               break; 
+            return true;
+            break; 
       
           case 1:
           
@@ -557,13 +554,12 @@ bool specialKeys(int keynum) {
             BootKeyboard.release(KEY_HOME);
             if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialPrintLine("HOME");
-              return true;
+            return true;
             break;
 
           case 2:
             if ( shifted() ) 
             {
-          
               BootKeyboard.press(KEY_LEFT);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_LEFT);  
@@ -572,7 +568,6 @@ bool specialKeys(int keynum) {
             } 
             else 
             {
-          
               BootKeyboard.press(KEY_RIGHT);  
               delay(debounceDelay);     
               BootKeyboard.release(KEY_RIGHT);                  
@@ -584,18 +579,15 @@ bool specialKeys(int keynum) {
           case 7:
             if ( shifted() ) 
             {
-          
               BootKeyboard.press(KEY_UP);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_UP);  
               SerialPrintLine("CURSOR UP");   
               return true;
-             
             } 
             else 
             {
-          
-             BootKeyboard.press(KEY_DOWN);  
+              BootKeyboard.press(KEY_DOWN);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_DOWN);  
               SerialPrintLine("CURSOR DOWN");              
@@ -608,17 +600,14 @@ bool specialKeys(int keynum) {
           case 4:
             if ( shifted() ) 
             {
-          
               BootKeyboard.press(KEY_F2);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F2);  
               SerialPrintLine("F2");   
               return true;
-             
             } 
             else 
             {
-          
               BootKeyboard.press(KEY_F1);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F1);  
@@ -630,17 +619,14 @@ bool specialKeys(int keynum) {
           case 5:
             if ( shifted() ) 
             {
-          
               BootKeyboard.press(KEY_F4);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F4);  
               SerialPrintLine("F4");   
               return true;
-             
             } 
             else 
             {
-          
               BootKeyboard.press(KEY_F3);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F3);  
@@ -649,21 +635,17 @@ bool specialKeys(int keynum) {
             }      
             break;
 
-
           case 6:
             if ( shifted() ) 
             {
-          
               BootKeyboard.press(KEY_F6);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F6);  
               SerialPrintLine("F6");   
               return true;
-             
             } 
             else 
             {
-          
               BootKeyboard.press(KEY_F5);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F5);  
@@ -672,23 +654,27 @@ bool specialKeys(int keynum) {
             }      
             break;
 
-
           case 3:
             if ( shifted() ) 
             {
-          
               BootKeyboard.press(KEY_F8);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F8);  
               SerialPrintLine("F8");   
               return true;
-             
             } 
             else 
             {
-                // C= F7 brings up the menu in BMC64
-                if( ckey() )
-                {
+              // C= F7 brings up the menu in BMC64
+              if( ckey() )
+              {
+                #if defined(MISTER)
+                  BootKeyboard.press(KEY_F12);  
+                  delay(debounceDelay);
+                  BootKeyboard.release(KEY_F12);  
+                  SerialPrintLine("MiSTer F12");              
+                  return true;
+                #else
                   BootKeyboard.press(CKEY);                 
                   BootKeyboard.press(KEY_F7);  
                   delay(debounceDelay);
@@ -696,22 +682,19 @@ bool specialKeys(int keynum) {
                   BootKeyboard.press(CKEY);  
                   SerialPrintLine("C= F7");              
                   return true;
-                }
-                else
-                {
-                  BootKeyboard.press(KEY_F7);  
-                  delay(debounceDelay);
-                  BootKeyboard.release(KEY_F7);  
-                  SerialPrintLine("F7");              
-                  return true;
-                }
+                #endif
+              }
+              else
+              {
+                 BootKeyboard.press(KEY_F7);  
+                 delay(debounceDelay);
+                 BootKeyboard.release(KEY_F7);  
+                 SerialPrintLine("F7");              
+                 return true;
+              }
             }      
             break;       
-                
           }
-
-
-        
 
          // Shifted / modifiers (eg. shift-2 = ")
          if ( shifted() ) {
@@ -799,7 +782,6 @@ bool specialKeys(int keynum) {
             BootKeyboard.release(printchar);  
             SerialWrite(printchar);
             return true;
-            
           }
        }
 
@@ -807,11 +789,9 @@ bool specialKeys(int keynum) {
        return false;
 }       
 
- 
 
 bool shifted()
 {
-
  if((lastKeyState[17] || lastKeyState[64]) && (thisKey!=17 && thisKey!=64)) 
   return true;
   else
@@ -820,7 +800,6 @@ bool shifted()
 
 bool ckey()
 {
-  
  if(lastKeyState[75] && thisKey!=75) 
   return true;
   else
@@ -830,30 +809,24 @@ bool ckey()
 
 bool ctrl()
 {
-  
  if(lastKeyState[72] && thisKey!=72) 
   return true;
   else
   return false;
-  
 }
 
 
 void press(uint8_t key)
 {
-
       if (shifted()) BootKeyboard.press(KEY_LEFT_SHIFT);
       if (ckey()) BootKeyboard.press(CKEY);   
       if (ctrl()) BootKeyboard.press(CTRLKEY);
       BootKeyboard.press(key);
-  
 }
 
 void release(uint8_t key)
 {
-
       BootKeyboard.release(key);
-
       if (shifted()) BootKeyboard.release(KEY_LEFT_SHIFT);
       if (ckey()) BootKeyboard.release(CKEY);
       if (ctrl()) BootKeyboard.release(CTRLKEY);
