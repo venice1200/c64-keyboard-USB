@@ -428,12 +428,14 @@ bool specialKeys(int keynum) {
             return true;
             break; 
 
-          case 66:
-            if( ckey() ) BootKeyboard.press(CKEY);
+          case 66:  // Star "*"
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
+            //if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(UPARROW);
             delay(debounceDelay);
             BootKeyboard.release(UPARROW);
-            if( ckey() ) BootKeyboard.release(CKEY);
+            //if( ckey() ) BootKeyboard.release(CKEY);
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialPrintLine("UPARROW");
             return true;
             break;
