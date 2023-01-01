@@ -494,22 +494,24 @@ bool specialKeys(int keynum) {
             break;   
 
           case 75:              // Commodore Key
-            if ( shifted() ) 
+            if ( shifted() )    // 
             {
               BootKeyboard.press(KEY_LEFT_SHIFT);
               BootKeyboard.press(CKEY);
               delay(debounceDelay);
               BootKeyboard.release(CKEY);
               BootKeyboard.release(KEY_LEFT_SHIFT);
-              SerialPrintLine("CHANGE CASE"); 
+              SerialPrintLine("CHANGE CASE MODE"); 
             }
             return true;
             break;          
    
           case 77:
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
             BootKeyboard.press(KEYSTOP);  
             delay(debounceDelay);
             BootKeyboard.release(KEYSTOP);
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialPrintLine("RUNSTOP");
             return true;
             break;
