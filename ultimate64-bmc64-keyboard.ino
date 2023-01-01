@@ -1,4 +1,6 @@
 
+//Original from https://github.com/omiq/c64-keyboard-USB 
+
 // Uncomment to debug using serial monitor at 115200 baud
 //#define DEBUG
 
@@ -412,7 +414,7 @@ bool specialKeys(int keynum) {
           switch (keynum) 
           {
 
-          case 61:  // C64 Key "*" (Star)
+          case 61:  // C64 Key "*" (Star) send KEY_RIGHT_BRACE to MiSTer
             if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
             if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(KEY_RIGHT_BRACE);
@@ -424,7 +426,7 @@ bool specialKeys(int keynum) {
             return true;
             break;
 
-          case 68:  // MiSTer Run/Stop-Restore = Keymap No 68
+          case 68:  // C64 Run/Stop-Restore sends ESC + F11 to MiSTer
             //if( ckey() ) {
             if( lastKeyState[77] ) {
               BootKeyboard.press(KEY_ESC);  
@@ -435,7 +437,7 @@ bool specialKeys(int keynum) {
               SerialPrintLine("MiSTer RUN/STOP (ESC) + RESTORE (F11)");              
               return true;
             }
-            else {  // Restore Key only, nothinhg happens on MiSTer
+            else {  // C64 Restore Key only sends F11 to MiSTer, nothinhg happens on MiSTer
               BootKeyboard.press(KEY_F11);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F11);  
@@ -444,7 +446,7 @@ bool specialKeys(int keynum) {
             }
             break;
 
-          case 30:  // MiSTer Key 7, shifted need to send Shift + 6 as of some swaps in Core?
+          case 30:  // C64 "7" Key sends "7" to MiSTer but shifted need to send Shift + 6 as of some character swaps in Core?
             printchar = '7';  // Number 7 (also ignored, see above!)
             if ( shifted() ) {
               printchar = '6';  // MiSTer Fix, Shift-6 is swapped with Shift-7
@@ -462,19 +464,17 @@ bool specialKeys(int keynum) {
             return true;
             break; 
 
-          case 66:  // MiSTer Key = Star "*" = C64 Key "UPARROW", 
+          case 66:  // C64 Key Uparrow + Shift Mode (PI)
             if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
-            //if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(UPARROW);
             delay(debounceDelay);
             BootKeyboard.release(UPARROW);
-            //if( ckey() ) BootKeyboard.release(CKEY);
             if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
             SerialPrintLine("UPARROW");
             return true;
             break;
 
-          case 71:  // 
+          case 71:  //  C64 Key Leftarrow
             BootKeyboard.press(LEFTARROW);
             delay(debounceDelay);
             BootKeyboard.release(LEFTARROW);
