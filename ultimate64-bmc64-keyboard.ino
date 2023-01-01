@@ -309,7 +309,11 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
-          case 66:        
+          case 66: 
+            return true;
+            break;
+
+          case 68:  // MiSTer Restore    
             return true;
             break;
 
@@ -427,8 +431,7 @@ bool specialKeys(int keynum) {
             break;
 
           case 68:  // C64 Run/Stop-Restore sends ESC + F11 to MiSTer
-            //if( ckey() ) {
-            if( lastKeyState[77] ) {
+            if( lastKeyState[77] ) {           // If previously pressed Key was Run/Stop and was not released
               BootKeyboard.press(KEY_ESC);  
               BootKeyboard.press(KEY_F11);  
               delay(debounceDelay);
