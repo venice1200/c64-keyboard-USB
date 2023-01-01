@@ -52,8 +52,6 @@
 #endif
 
 
-
-
 /* =======================================================================
 
  Commodore 64 USB HID for Pro Micro by Chris Garrett @makerhacks   
@@ -293,6 +291,10 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
+          case 61:  // MiSTer "*"
+            return true;
+            break;
+            
           case 62:
             return true;
             break;
@@ -410,7 +412,19 @@ bool specialKeys(int keynum) {
           switch (keynum) 
           {
 
-          case 68:  // MiSTer Run/Stop-Restore
+          case 61:  // C64 Key "*" (Star)
+            if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
+            if( ckey() ) BootKeyboard.press(CKEY);
+            BootKeyboard.press(KEY_RIGHT_BRACE);
+            delay(debounceDelay);
+            BootKeyboard.release(KEY_RIGHT_BRACE);
+            if( ckey() ) BootKeyboard.release(CKEY);
+            if ( shifted() ) BootKeyboard.release(KEY_LEFT_SHIFT);
+            SerialPrintLine("* (Star)");
+            return true;
+            break;
+
+          case 68:  // MiSTer Run/Stop-Restore = Keymap No 68
             //if( ckey() ) {
             if( lastKeyState[77] ) {
               BootKeyboard.press(KEY_ESC);  
@@ -421,7 +435,7 @@ bool specialKeys(int keynum) {
               SerialPrintLine("MiSTer RUN/STOP (ESC) + RESTORE (F11)");              
               return true;
             }
-            else {  // Restore Key only
+            else {  // Restore Key only, nothinhg happens on MiSTer
               BootKeyboard.press(KEY_F11);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F11);  
@@ -448,7 +462,7 @@ bool specialKeys(int keynum) {
             return true;
             break; 
 
-          case 66:  // Star "*"
+          case 66:  // MiSTer Key = Star "*" = C64 Key "UPARROW", 
             if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
             //if( ckey() ) BootKeyboard.press(CKEY);
             BootKeyboard.press(UPARROW);
