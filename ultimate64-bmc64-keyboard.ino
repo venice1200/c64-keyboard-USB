@@ -197,9 +197,7 @@ keymap[51] = 'p';
 keymap[56] = '@';
 keymap[61] = '*';
 keymap[66] = UPARROW;   
-#if defined(MISTER)
 keymap[68] = KEY_F11;     // MiSTer F11 = Restore
-#endif
 
 // THIRD ROW
 
@@ -412,8 +410,9 @@ bool specialKeys(int keynum) {
           switch (keynum) 
           {
 
-          case 68:  // MiSTer Restore
-            if( ckey() ) {
+          case 68:  // MiSTer Run/Stop-Restore
+            //if( ckey() ) {
+            if( lastKeyState[77] ) {
               BootKeyboard.press(KEY_ESC);  
               BootKeyboard.press(KEY_F11);  
               delay(debounceDelay);
@@ -422,7 +421,7 @@ bool specialKeys(int keynum) {
               SerialPrintLine("MiSTer RUN/STOP (ESC) + RESTORE (F11)");              
               return true;
             }
-            else {
+            else {  // Restore Key only
               BootKeyboard.press(KEY_F11);  
               delay(debounceDelay);
               BootKeyboard.release(KEY_F11);  
