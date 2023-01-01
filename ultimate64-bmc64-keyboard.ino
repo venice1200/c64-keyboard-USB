@@ -197,6 +197,9 @@ keymap[51] = 'p';
 keymap[56] = '@';
 keymap[61] = '*';
 keymap[66] = UPARROW;   
+#if defined(MISTER)
+keymap[68] = KEY_F11;     // MiSTer F11 = Restore
+#endif
 
 // THIRD ROW
 
@@ -276,7 +279,7 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
-          case 30:   // New
+          case 30:   // MiSTer
             return true;
             break;
 
@@ -409,8 +412,26 @@ bool specialKeys(int keynum) {
           switch (keynum) 
           {
 
+          case 68:  // MiSTer Restore
+            if( ckey() ) {
+              BootKeyboard.press(KEY_ESC);  
+              BootKeyboard.press(KEY_F11);  
+              delay(debounceDelay);
+              BootKeyboard.release(KEY_F11);  
+              BootKeyboard.release(KEY_ESC);  
+              SerialPrintLine("MiSTer RUN/STOP (ESC) + RESTORE (F11)");              
+              return true;
+            }
+            else {
+              BootKeyboard.press(KEY_F11);  
+              delay(debounceDelay);
+              BootKeyboard.release(KEY_F11);  
+              SerialPrintLine("MiSTer RESTORE (F11)");              
+              return true;
+            }
+            break;
 
-          case 30:
+          case 30:  // MiSTer Key 7, shifted need to send Shift + 6 as of some swaps in Core?
             printchar = '7';  // Number 7 (also ignored, see above!)
             if ( shifted() ) {
               printchar = '6';  // MiSTer Fix, Shift-6 is swapped with Shift-7
@@ -636,7 +657,6 @@ bool specialKeys(int keynum) {
             }      
             break;
 
-
           // F-KEYS
           case 4:
             if ( shifted() ) 
@@ -709,7 +729,7 @@ bool specialKeys(int keynum) {
               // C= F7 brings up the menu in BMC64
               if( ckey() )
               {
-                #if defined(MISTER)
+                #if defined(MISTER)                 // MiSTer
                   BootKeyboard.press(KEY_F12);  
                   delay(debounceDelay);
                   BootKeyboard.release(KEY_F12);  
@@ -760,7 +780,7 @@ bool specialKeys(int keynum) {
               printchar = '&';
               break;
        
-            //case 30:
+            //case 30:  // MiSTer
             //  printchar = '\'';
             //  break;
        
@@ -884,9 +904,12 @@ void loop() {
 
       // Is the key currently down and was before too?
       if (isKeyDown && lastKeyState[thisKey]) {
-       
-        // if(shifted()) SerialPrint(" SHIFT ");
 
+/*       
+        if(shifted()) SerialPrint(" SHIFT -");
+        if(ckey()) SerialPrint(" C= -");
+        if(ctrl()) SerialPrint(" CTRL -");
+*/
       }
       
       // Is the key currently down and wasn't before?
