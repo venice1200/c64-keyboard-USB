@@ -7,7 +7,7 @@
 // Uncomment the correct target machine to use your C64 keyboard with
 //#define U64
 //#define VICE
-#define MISTER
+#define MISTER  // Simulates an English Keyboard
 //#define BMC64
 
 
@@ -325,6 +325,10 @@ bool ignoreKey(int keynum) {
             return true;
             break;
    
+          case 75:  // MiSTer C=
+            return true;
+            break;
+   
           case 77:
             return true;
             break;
@@ -494,7 +498,7 @@ bool specialKeys(int keynum) {
             break;   
 
           case 75:              // Commodore Key
-            if ( shifted() )    // 
+            if ( shifted() )
             {
               BootKeyboard.press(KEY_LEFT_SHIFT);
               BootKeyboard.press(CKEY);
@@ -502,8 +506,15 @@ bool specialKeys(int keynum) {
               BootKeyboard.release(CKEY);
               BootKeyboard.release(KEY_LEFT_SHIFT);
               SerialPrintLine("CHANGE CASE MODE"); 
+              return true;
             }
-            return true;
+            else {
+              BootKeyboard.press(CKEY);
+              delay(debounceDelay);
+              BootKeyboard.release(CKEY);
+              SerialPrintLine("C= Key"); 
+              return true;
+            }
             break;          
    
           case 77:
