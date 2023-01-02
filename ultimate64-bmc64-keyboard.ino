@@ -196,8 +196,13 @@ keymap[46] = 'o';
 keymap[51] = 'p';
 keymap[56] = '@';
 keymap[61] = '*';
+#if defined(MISTER)
+keymap[61] = KEY_RIGHT_BRACE;
+#endif
 keymap[66] = UPARROW;   
+#if defined(MISTER)
 keymap[68] = KEY_F11;     // MiSTer F11 = Restore
+#endif
 
 // THIRD ROW
 
@@ -277,9 +282,11 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
+          #if defined(MISTER)
           case 30:   // MiSTer
             return true;
             break;
+          #endif
 
           case 50:
             return true;
@@ -293,10 +300,12 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
+          #if defined(MISTER)
           case 61:  // MiSTer "*"
             return true;
             break;
-            
+          #endif
+
           case 62:
             return true;
             break;
@@ -313,9 +322,11 @@ bool ignoreKey(int keynum) {
             return true;
             break;
 
+          #if defined(MISTER)
           case 68:  // MiSTer Restore    
             return true;
             break;
+          #endif
 
           case 71:
             return true;
@@ -325,9 +336,11 @@ bool ignoreKey(int keynum) {
             return true;
             break;
    
+          #if defined(MISTER)
           case 75:  // MiSTer C=
             return true;
             break;
+          #endif
    
           case 77:
             return true;
@@ -422,6 +435,8 @@ bool specialKeys(int keynum) {
           switch (keynum) 
           {
 
+          #if defined(MISTER)
+
           case 61:  // C64 Key "*" (Star) send KEY_RIGHT_BRACE to MiSTer
             if ( shifted() ) BootKeyboard.press(KEY_LEFT_SHIFT);
             if( ckey() ) BootKeyboard.press(CKEY);
@@ -480,6 +495,8 @@ bool specialKeys(int keynum) {
             SerialPrintLine("UPARROW");
             return true;
             break;
+          
+          #endif
 
           case 71:  //  C64 Key Leftarrow
             BootKeyboard.press(LEFTARROW);
